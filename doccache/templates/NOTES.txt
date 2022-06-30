@@ -1,0 +1,11 @@
+The following items have been performed:
+  - Dgraph has been installed
+  - Document cache has been installed
+  - Ingress has been configured
+
+Here are the urls for the different services:
+  - Alpha: {{ include "dgraph.alphaUrl" . }}
+  {{- if .Values.dgraph.ratel.enabled }}
+  - Ratel: {{ include "dgraph.ratelUrl" . }}
+  {{- end }}
+  - Prometheus: {{ include "dgraph.prometheusUrl" . }}

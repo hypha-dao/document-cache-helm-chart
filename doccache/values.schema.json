@@ -1,0 +1,416 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "properties": {
+    "nameOverride": {
+      "description": "If specified replaces chart name when creating full name used for the names of all components",
+      "type": "string"
+    },
+    "fullnameOverride": {
+      "description": "If specified its value is used for the names of all components",
+      "type": "string"
+    },
+    "url":{
+      "description": "Url details",
+      "properties": {
+        "domain": {
+          "description": "Domain Details",
+          "properties": {
+            "base": {
+              "type": "string",
+              "pattern": "^([a-z0-9]+(-[a-z0-9]+)*\\.)+[a-z]{2,}$"
+            },
+            "alpha": {
+              "type": "string",
+              "pattern": "^([a-z0-9]+(-[a-z0-9]+)*)+[a-z]{1,}$"
+            },
+            "ratel": {
+              "type": "string",
+              "pattern": "^([a-z0-9]+(-[a-z0-9]+)*)+[a-z]{1,}$"
+            },
+            "prometheus": {
+              "type": "string",
+              "pattern": "^([a-z0-9]+(-[a-z0-9]+)*)+[a-z]{1,}$"
+            }
+          },
+          "required": [
+            "base"
+          ],
+          "type": "object"
+        },
+        "path": {
+          "description": "Path Details",
+          "properties": {
+            "alpha": {
+              "type": "string",
+              "pattern": "^\\/[\\/\\.a-zA-Z0-9\\-]*$"
+            },
+            "ratel": {
+              "type": "string",
+              "pattern": "^\\/[\\/\\.a-zA-Z0-9\\-]*$"
+            },
+            "prometheus": {
+              "type": "string",
+              "pattern": "^\\/[\\/\\.a-zA-Z0-9\\-]*$"
+            }
+          },
+          "required": [
+            "alpha",
+            "ratel",
+            "prometheus"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "domain",
+        "path"
+      ],
+      "type": "object"
+    },
+    "env": {
+      "description": "Environment variables",
+      "properties": {
+        "contractName": {
+          "type": "string",
+          "pattern": "^[a-z1-5\\.]{1,12}$"
+        },
+        "docTableName": {
+          "type": "string",
+          "pattern": "^[a-z1-5\\.]{1,12}$"
+        },
+        "edgeTableName": {
+          "type": "string",
+          "pattern": "^[a-z1-5\\.]{1,12}$"
+        },
+        "firehoseEndpoint": {
+          "type": "string",
+          "pattern": "^[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&'\\(\\)\\*\\+,;=.]+$"
+        },
+        "eosEndpoint": {
+          "type": "string",
+          "pattern": "^(http(s)?:\\/\\/)[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&'\\(\\)\\*\\+,;=.]+$"
+        },
+        "prometheusPort": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "startBlock": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "heartBeatFrequency": {
+          "type": "integer",
+          "minimum": 10
+        },
+        "dfuseApiKey": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_]+$"
+        },
+        "elasticEndpoint": {
+          "type": "string",
+          "pattern": "^(http(s)?:\\/\\/)[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&'\\(\\)\\*\\+,;=.]+$"
+        },
+        "elasticApiKey": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_=]+$"
+        }
+      },
+      "required": [
+        "contractName",
+        "docTableName",
+        "edgeTableName",
+        "firehoseEndpoint",
+        "eosEndpoint",
+        "prometheusPort",
+        "startBlock",
+        "heartBeatFrequency"
+      ],
+      "type": "object"
+    },
+    "typeMapping": {
+      "description": "Type-Fields map, that enables document type deduction",
+      "type": "array",
+      "items": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\._]+$"
+          },
+          "labels": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "type",
+          "labels"
+        ],
+        "type": "object"
+      }
+    },
+    "customInterfaces": {
+      "description": "Custom interfaces descriptions to add as GQL types",
+      "type": "array",
+      "items": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\._]+$"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "contentGroup":{
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9\\._]+$"
+                },
+                "name":{
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9\\._]+$"
+                },
+                "type":{
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9\\._]+$"
+                },
+                "signature":{
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ],
+              "type":"object"
+            }
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9\\._]+$"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "fields"
+        ],
+        "type": "object"
+      }
+    },
+    "logicalIds": {
+      "description": "Details logical Ids to add",
+      "type": "array",
+      "items": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\._]+$"
+          },
+          "ids": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "contentGroup":{
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9\\._]+$"
+                },
+                "name":{
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9\\._]+$"
+                },
+                "type":{
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9\\._]+$"
+                }
+              },
+              "required": [
+                "contentGroup",
+                "name",
+                "type"
+              ],
+              "type":"object"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "ids"
+        ],
+        "type": "object"
+      }
+    },
+    "dgraph": {
+      "description": "Dgraph configuration values",
+      "properties": {
+        "image": {
+          "properties": {
+            "tag": {
+              "type": "string",
+              "pattern": "^[a-z0-9-_\\.]+$"
+            }
+          },
+          "required": [
+            "tag"
+          ],
+          "type": "object"
+        },
+        "zero": {
+          "properties": {
+            "replicaCount": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "persistence": {
+              "properties": {
+                "size": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "size"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "replicaCount",
+            "persistence"
+          ],
+          "type": "object"
+        },
+        "alpha": {
+          "properties": {
+            "replicaCount": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "persistence": {
+              "properties": {
+                "size": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "size"
+              ],
+              "type": "object"
+            },
+            "initContainers": {
+              "properties": {
+                "init": {
+                  "properties": {
+                    "image": {
+                      "properties": {
+                        "tag": {
+                          "type": "string",
+                          "pattern": "^[a-z0-9-_\\.]+$"
+                        }
+                      },
+                      "required": [
+                        "tag"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "image"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "init"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "replicaCount",
+            "persistence"
+          ],
+          "type": "object"
+        },
+        "ratel": {
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "replicaCount": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "image": {
+              "properties": {
+                "tag": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-_\\.]+$"
+                }
+              },
+              "required": [
+                "tag"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "enabled",
+            "replicaCount",
+            "image"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "alpha",
+        "zero",
+        "ratel"
+      ],
+      "type": "object"
+    },
+    "image": {
+      "description": "Image Details",
+      "properties": {
+        "repository": {
+          "type": "string",
+          "pattern": "^[a-z0-9-_/]+$"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "pattern": "^(Always|Never|IfNotPresent)$"
+        },
+        "tag": {
+          "type": "string",
+          "pattern": "^[a-z0-9-_\\.]+$"
+        }
+      },
+      "required": [
+        "repository",
+        "pullPolicy",
+        "tag"
+      ],
+      "type": "object"
+    }
+  },
+  "ingress": {
+    "description": "Ingress Details",
+    "properties": {
+      "enabled": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "enabled"
+    ],
+    "type": "object"
+  },
+  "required": [
+    "url",
+    "env",
+    "dgraph",
+    "image",
+    "ingress"
+  ],
+  "title": "Values",
+  "type": "object"
+}

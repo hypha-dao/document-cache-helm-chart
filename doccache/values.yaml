@@ -1,0 +1,71 @@
+# Default values for doccache.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: sebastianmontero/hypha-doc-cache-gql-go-mainnet
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: 14c74003b41923da1ee76f6bcae8832e186619d8
+
+nameOverride: ""
+fullnameOverride: ""
+
+url:
+  domain: 
+    base: ""
+    # alpha: alpha-dge-test
+    # ratel: ratel-dge-test
+    # prometheus: prometheus-dge-test
+  path:
+    alpha: /
+    ratel: /
+    prometheus: /
+
+env:
+  contractName: ""
+  docTableName: documents
+  edgeTableName: edges
+  firehoseEndpoint: ""
+  eosEndpoint: ""
+  prometheusPort: 2114
+  startBlock: 1
+  heartBeatFrequency: 100
+  elasticEndpoint: "" #Used only to update the doccache config object
+  elasticApiKey: "" #Used only to update the doccache config object
+
+dgraph:
+  image:
+    tag: v21.03.2
+  zero:
+    # extraFlags: "-v=3"
+    replicaCount: 1
+    persistence:
+      size: 5Gi
+  alpha:
+    # extraFlags: "-v=3"
+    replicaCount: 1
+    persistence:
+      size: 20Gi
+    configFile:
+      config.yaml: |
+        security:
+          whitelist: 10.0.0.0/8
+    # initContainers:
+    #   init:
+    #     image:
+    #       tag: v21.03.2
+  ratel: 
+    enabled: true
+    image:
+      tag: v20.11.3
+    replicaCount: 1
+  
+
+
+  # backups.image.tag=v20.11.3
+  # backups.destination Destination - file path, s3://, minio:	/dgraph/backups
+
+
+ingress:
+  enabled: true
